@@ -10,6 +10,7 @@ import Enquirer from 'enquirer'
 import open from 'open'
 import terminalImage from 'terminal-image';
 import fs from 'fs';
+import path from 'path'
 import term from 'terminal-kit';
 import playSound from 'play-sound'
 import {username} from 'username';
@@ -21,6 +22,13 @@ clear()
 process.stdin.resume();//so the program will not close instantly
 var audio;
 let user = await username();
+const __dirname = path.resolve();
+let catPhotoPath = path.resolve(__dirname, 'assets/gato.png');
+let worldPhotoPath = path.resolve(__dirname, 'assets/world.JPG');
+let towerPhotoPath = path.resolve(__dirname, 'assets/tower.jpg');
+let alphaAudioPath = path.resolve(__dirname, 'assets/alpha.mp3');
+let poemPath = path.resolve(__dirname, 'poem.txt');
+
 function exitHandler() {
     if (audio) audio.kill();
     process.exit();
@@ -110,12 +118,12 @@ const options = {
 
                 //play sound
                 const player = playSound();
-                audio = player.play('./assets/alpha.mp3', function(err){
+                audio = player.play(alphaAudioPath, function(err){
                     if (err && !err.killed) throw err
                 });
 
 
-                const raw = fs.readFileSync('poem.txt', 'utf8');
+                const raw = fs.readFileSync(poemPath, 'utf8');
                 //replace all instances of sa1ad with user
                 const replaced = raw.replace(/sa1ad/g, user);
 
@@ -153,14 +161,20 @@ const options = {
             name: `| cat`,
             value: async () => {
                 open("https://www.youtube.com/watch?v=5nxY9rMaE50&ab_channel=Bara");
-                console.log(await terminalImage.file('./assets/gato.png',{width: 40}));
+                console.log(await terminalImage.file(catPhotoPath,{width: 40}));
                 console.log("can anyone tell me if this cat is okay?\nits a bit strange hes in a bird cage");
             }
         },
         {
             name: '| babel',
             value: async () => {
-                console.log(await terminalImage.file('./assets/tower.jpg',{width: 40}));
+                console.log('test')
+                try {
+                    console.log(await terminalImage.file(towerPhotoPath,{width: 40}));
+                } catch (err) {
+                    console.log(err)
+                }
+                
                 //console log above with wrap using terminal-kit
                 console.log('By the rivers of Babylon, there we sat \ndown, yea, we wept. \nRaze it, raze it, even to the foundation.\nO daughter of Babylon. who art thou?')
             }
@@ -168,7 +182,7 @@ const options = {
         {
             name: '| world',
             value: async () => {
-                console.log(await terminalImage.file('./assets/world.JPG',{width: 40}));
+                console.log(await terminalImage.file(worldPhotoPath,{width: 40}));
                 console.log('la mond est a nous')
             }
         },
