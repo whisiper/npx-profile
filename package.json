@@ -1,11 +1,13 @@
 {
-  "name": "npxprofile",
-  "version": "1.0.1",
+  "name": "sa1ad",
+  "version": "1.0.4",
   "description": "",
   "main": "index.js",
   "type": "module",
+  "bin": "./index.js",
   "scripts": {
-    "dev": "node card.js"
+    "setup": "ncu -u && npm i",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
@@ -22,8 +24,5 @@
     "terminal-image": "^2.0.0",
     "terminal-kit": "^3.0.0",
     "username": "^6.0.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.22"
   }
 }
