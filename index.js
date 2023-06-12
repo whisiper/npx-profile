@@ -19,8 +19,11 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import * as path from 'path';
 
-// clear the terminal before showing the npx card
+// clear the terminal before showing the npx card ==========================================================================
+
 clear()
+
+// =========================================================================================================================
 
 let user;
 try {
@@ -29,17 +32,22 @@ try {
     console.log(err)
 }
 
+// =========================================================================================================================
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+let catPhotoPath = "./assets/gato.png"
+let catFile = path.resolve(__dirname, `${catPhotoPath}`)
 
-/* let catPhotoPath = path.resolve(__dirname, 'assets/gato.png');
-let worldPhotoPath = path.resolve(__dirname, 'assets/world.JPG');
-let towerPhotoPath = path.resolve(__dirname, 'assets/tower.jpg'); */
+let towerPhotoPath = "./assets/tower.jpg"
+let towerFile = path.resolve(__dirname, `${towerPhotoPath}`)
+
+let worldPhotoPath = "./assets/world.JPG"
+let worldFile = path.resolve(__dirname, `${worldPhotoPath}`)
+
 let alphaPath = "./assets/alpha.mp3"
 let alphaFile = path.resolve(__dirname, `${alphaPath}`)
-/* let alphaAudioPath = path.resolve(__dirname, 'assets/alpha.mp3'); */
 
 const gato = await got("https://github.com/s-alad/sa1ad/blob/main/assets/gato.png?raw=true").buffer();
 const world = await got("https://github.com/s-alad/sa1ad/blob/main/assets/world.JPG?raw=true").buffer();
@@ -50,20 +58,18 @@ const poemText = await poemFetch.text();
 
 const alphaAudio = await fetch('https://raw.githubusercontent.com/s-alad/sa1ad/main/assets/alpha.mp3');
 
+// =========================================================================================================================
 var audio;
-
-
-process.stdin.resume();//so the program will not close instantly
-
+process.stdin.resume();
 function exitHandler() {
     if (audio) audio.kill();
     process.exit();
 }
-//do something when app is closing
 process.on('exit', exitHandler);
 process.on('SIGINT', exitHandler);
 process.on('SIGUSR1', exitHandler);
 process.on('SIGUSR2', exitHandler);
+// =========================================================================================================================
 
 const data = {
     name: chalk.bold.green("@sa1ad"),
@@ -78,7 +84,7 @@ const data = {
     labelXMR: chalk.hex('#9E9E9E').bold("xmr:")
 };
 
-const me = boxen(
+const card = boxen(
     [
         `${data.name}`,
         ``,
@@ -87,27 +93,21 @@ const me = boxen(
         `${data.labelEmail} ${data.email}`,
         /* `${data.labelXMR} ${data.xmr}`, */
         ``,
-        `${chalk(
-            "omnia mea mecom porto."
-        )}`,
+        `${chalk("omnia mea mecom porto.")}`,
         `${chalk.italic("all that is mine, I carry with me.")}`,
     ].join("\n"),
     {
         margin: 0,
-        /* float: 'center', */
-        padding: {
-            top: 1,
-            bottom: 1,
-            right: 2,
-            left: 2
-        },
+        padding: { top: 1, bottom: 1, right: 2, left: 2},
         borderStyle: "double",
         borderColor: "white"
     }
 );
 
-console.log(me);
+console.log(card);
 console.log()
+
+// =========================================================================================================================
 
 const options = {
     type: "list",
@@ -161,7 +161,7 @@ const options = {
                 /* const poem = fs.readFileSync('poem.txt', 'utf8').split('\n'); */
 
                 //10 mins divided by number of lines
-                const timeBetweenLines = /* (10 * 60 * 1000) / poem.length; */ 900;
+                const timeBetweenLines = (10 * 60 * 1000) / poem.length * 1.25;
 
                 //print each line with a delay
                 for (let i = 0; i < poem.length; i++) {
