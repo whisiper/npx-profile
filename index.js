@@ -161,7 +161,7 @@ const options = {
                 /* const poem = fs.readFileSync('poem.txt', 'utf8').split('\n'); */
 
                 //10 mins divided by number of lines
-                const timeBetweenLines = (10 * 60 * 1000) / poem.length * 1.25;
+                const timeBetweenLines = (10 * 60 * 1000) / (poem.length * 1.25);
 
                 //print each line with a delay
                 for (let i = 0; i < poem.length; i++) {
