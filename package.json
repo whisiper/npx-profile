@@ -1,10 +1,21 @@
 {
   "name": "saladin",
-  "version": "1.0.8",
+  "version": "1.1.4",
   "description": "",
   "main": "index.js",
   "type": "module",
   "bin": "./index.js",
+  "files": [
+    "index.js",
+    "poem.txt",
+    "assets/alpha.mp3",
+    "assets/tower.jpg",
+    "assets/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/s-alad/sa1ad"
+  },
   "scripts": {
     "setup": "ncu -u && npm i",
     "start": "node index.js"
@@ -17,7 +28,9 @@
     "chalk": "^5.2.0",
     "clear": "^0.1.0",
     "enquirer": "^2.3.6",
+    "got": "^13.0.0",
     "inquirer": "^9.2.7",
+    "node-fetch": "^3.3.1",
     "open": "^9.1.0",
     "play-sound": "^1.1.5",
     "speaker": "^0.5.4",

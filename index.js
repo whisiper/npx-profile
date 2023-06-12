@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 'use strict'
 
-
 import chalk from 'chalk'
 import boxen from 'boxen'
 import clear from 'clear'
@@ -9,39 +8,56 @@ import inquirer from 'inquirer'
 import Enquirer from 'enquirer'
 import open from 'open'
 import terminalImage from 'terminal-image';
-import fs from 'fs';
-import path from 'path'
 import term from 'terminal-kit';
+import got from 'got';
 import playSound from 'play-sound'
 import {username} from 'username';
+import fetch from 'node-fetch';
 
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import * as path from 'path';
 
 // clear the terminal before showing the npx card
 clear()
 
-process.stdin.resume();//so the program will not close instantly
-var audio;
 let user = await username();
-const __dirname = path.resolve();
-let catPhotoPath = path.resolve(__dirname, 'assets/gato.png');
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+
+/* let catPhotoPath = path.resolve(__dirname, 'assets/gato.png');
 let worldPhotoPath = path.resolve(__dirname, 'assets/world.JPG');
-let towerPhotoPath = path.resolve(__dirname, 'assets/tower.jpg');
-let alphaAudioPath = path.resolve(__dirname, 'assets/alpha.mp3');
-let poemPath = path.resolve(__dirname, 'poem.txt');
+let towerPhotoPath = path.resolve(__dirname, 'assets/tower.jpg'); */
+let alphaPath = "./assets/alpha.mp3"
+let alphaFile = path.resolve(__dirname, `${alphaPath}`)
+/* let alphaAudioPath = path.resolve(__dirname, 'assets/alpha.mp3'); */
+
+const gato = await got("https://github.com/s-alad/sa1ad/blob/main/assets/gato.png?raw=true").buffer();
+const world = await got("https://github.com/s-alad/sa1ad/blob/main/assets/world.JPG?raw=true").buffer();
+const tower = await got("https://github.com/s-alad/sa1ad/blob/main/assets/tower.jpg?raw=true").buffer();
+
+const poemFetch = await fetch('https://raw.githubusercontent.com/s-alad/sa1ad/main/poem.txt');
+const poemText = await poemFetch.text();
+
+const alphaAudio = await fetch('https://raw.githubusercontent.com/s-alad/sa1ad/main/assets/alpha.mp3');
+
+var audio;
+
+
+process.stdin.resume();//so the program will not close instantly
 
 function exitHandler() {
     if (audio) audio.kill();
     process.exit();
 }
-
 //do something when app is closing
 process.on('exit', exitHandler);
 process.on('SIGINT', exitHandler);
 process.on('SIGUSR1', exitHandler);
 process.on('SIGUSR2', exitHandler);
-
-
-
 
 const data = {
     name: chalk.bold.green("@sa1ad"),
@@ -92,13 +108,6 @@ const options = {
     name: 'actions',
     message: 'select action',
     choices: [
-/*         {
-            name: `send an email`,
-            value: () => {
-                open("mailto:ssalad@skiff.com");
-                console.log("I'll respond if you're interesting.");
-            }
-        }, */
         {
             name: '| poem',
             value: async () => {
@@ -117,13 +126,24 @@ const options = {
                 
 
                 //play sound
-                const player = playSound();
-                audio = player.play(alphaAudioPath, function(err){
-                    if (err && !err.killed) throw err
-                });
+                try {
+                    const player = playSound();
+                    audio = player.play(alphaFile, function(err){
+                        if (err && !err.killed) throw err
+                    });
+                } catch (err) {
+                    console.log(err)
+                }
+                
+/*                 let raw;
+                try {
+                    raw = fs.readFileSync("poem.txt", 'utf8');
+                } catch (err) {
+                    console.log(err)
+                } */
 
+                let raw = poemText;
 
-                const raw = fs.readFileSync(poemPath, 'utf8');
                 //replace all instances of sa1ad with user
                 const replaced = raw.replace(/sa1ad/g, user);
 
@@ -135,7 +155,7 @@ const options = {
                 /* const poem = fs.readFileSync('poem.txt', 'utf8').split('\n'); */
 
                 //10 mins divided by number of lines
-                const timeBetweenLines = (10 * 60 * 1000) / poem.length;
+                const timeBetweenLines = /* (10 * 60 * 1000) / poem.length; */ 900;
 
                 //print each line with a delay
                 for (let i = 0; i < poem.length; i++) {
@@ -161,7 +181,8 @@ const options = {
             name: `| cat`,
             value: async () => {
                 open("https://www.youtube.com/watch?v=5nxY9rMaE50&ab_channel=Bara");
-                console.log(await terminalImage.file(catPhotoPath,{width: 40}));
+                /* console.log(await terminalImage.file(catPhotoPath,{width: 40})); */
+                console.log(await terminalImage.buffer(gato, {width: 40}));
                 console.log("can anyone tell me if this cat is okay?\nits a bit strange hes in a bird cage");
             }
         },
@@ -170,7 +191,8 @@ const options = {
             value: async () => {
                 console.log('test')
                 try {
-                    console.log(await terminalImage.file(towerPhotoPath,{width: 40}));
+                    /* console.log(await terminalImage.file(towerPhotoPath,{width: 40})); */
+                    console.log(await terminalImage.buffer(tower, {width: 40}));
                 } catch (err) {
                     console.log(err)
                 }
@@ -182,7 +204,8 @@ const options = {
         {
             name: '| world',
             value: async () => {
-                console.log(await terminalImage.file(worldPhotoPath,{width: 40}));
+                /* console.log(await terminalImage.file(worldPhotoPath,{width: 40})); */
+                console.log(await terminalImage.buffer(world, {width: 40}));
                 console.log('la mond est a nous')
             }
         },
