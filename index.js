@@ -22,7 +22,13 @@ import * as path from 'path';
 // clear the terminal before showing the npx card
 clear()
 
-let user = await username();
+let user;
+try {
+    user = await username();
+} catch (err) {
+    console.log(err)
+}
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
