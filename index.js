@@ -141,13 +141,6 @@ const options = {
                     console.log(err)
                 }
                 
-/*                 let raw;
-                try {
-                    raw = fs.readFileSync("poem.txt", 'utf8');
-                } catch (err) {
-                    console.log(err)
-                } */
-
                 let raw = poemText;
 
                 //replace all instances of sa1ad with user
@@ -155,10 +148,6 @@ const options = {
 
                 //split into lines
                 const poem = replaced.split('\n');
-
-
-                //read in poem.txt into list of lines
-                /* const poem = fs.readFileSync('poem.txt', 'utf8').split('\n'); */
 
                 //10 mins divided by number of lines
                 const timeBetweenLines = 1500;
@@ -172,9 +161,6 @@ const options = {
                     let final = t.wrapColumn({width: 40});
                     t.wrap(currentLine);
                     t( '\n' ) ;
-
-                    //print each line with a delay
-                    //console.log(final);
 
                     await new Promise(resolve => setTimeout(resolve, (
                         /* currentLine.length < 16 ? 700 : 1000  */
@@ -195,7 +181,6 @@ const options = {
         {
             name: '| babel',
             value: async () => {
-                console.log('test')
                 try {
                     /* console.log(await terminalImage.file(towerPhotoPath,{width: 40})); */
                     console.log(await terminalImage.buffer(tower, {width: 40}));
